@@ -38,6 +38,10 @@ public class CustomerServiceImpl implements CustomerService {
 		item.setPrice(product.getPrice());
 		item.setQuantity(product.getQuantity());
 		customer.getItemBought().add(item);
+		if (product.getPrice() > 50)
+			customer.setCashBackPoints(customer.getCashBackPoints() + 1);
+		if (product.getPrice() > 100)
+			customer.setCashBackPoints(customer.getCashBackPoints() + 2);
 		repository.save(customer);
 		return customer;
 	}
