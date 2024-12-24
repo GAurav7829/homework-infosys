@@ -1,8 +1,7 @@
 # homework-infosys
-
-start api-service
-start retailer-service
-start customer-service
+- start api-service
+- start retailer-service
+- start customer-service
 
 # retailer - product
 http://localhost:8001/swagger-ui/index.html
