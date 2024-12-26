@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.infosys.model.Customer;
 import com.infosys.model.Product;
+import com.infosys.model.ProductsBought;
 import com.infosys.proxy.RetailerProxy;
 import com.infosys.service.CustomerService;
 import com.infosys.utils.AppConstants;
@@ -61,6 +62,12 @@ public class CustomerController {
 			return ResponseEntity.ok(ITEM_BOUGHT);
 		} else
 			return new ResponseEntity<String>(message, HttpStatus.OK);
-
 	}
+	
+	@GetMapping("/{id}/lastThreeMonthsTransaction")
+	public ResponseEntity<?> getLastThreeMonthsTransaction(@PathVariable long id){
+		List<ProductsBought> lastThreeTransaction = customerService.getLastThreeTransaction(id);
+		return ResponseEntity.ok(lastThreeTransaction);
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.infosys.model;
 
-import org.springframework.data.annotation.Id;
+import java.time.LocalDateTime;
+
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -11,11 +12,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
-	@Id
-	private long id;
-	private String product;
-	private String retailerName;
+public class ProductsBought {
+	private Long id;
 	private double price;
 	private int quantity;
+	private LocalDateTime date;
+	
 }
