@@ -35,7 +35,7 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer buyProduct(Product product, long customerId) {
 		Customer customer = repository.findById(customerId).get();
 		ProductsBought productBought = new ProductsBought();
-		productBought.setId(product.getId());
+		productBought.setProductId(product.getId());
 		productBought.setPrice(product.getPrice());
 		productBought.setQuantity(product.getQuantity());
 		customer.getProductsBought().add(productBought);

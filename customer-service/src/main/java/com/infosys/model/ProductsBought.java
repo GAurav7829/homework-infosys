@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductsBought {
-	private Long id;
+	private Long productId;
 	private double price;
 	private int quantity;
 	private LocalDateTime date;
