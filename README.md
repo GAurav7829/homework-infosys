@@ -3,6 +3,9 @@
 - start retailer-service
 - start customer-service
 
+# Eureka Server
+http://localhost:8761/
+
 # retailer - product
 http://localhost:8001/swagger-ui/index.html
 
