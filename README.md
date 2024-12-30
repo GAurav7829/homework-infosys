@@ -22,4 +22,20 @@ http://localhost:8761/
 http://localhost:8001/swagger-ui/index.html
 
 # customer
+> Endpoints screenshots
+- EndPoints
+![screenshot](images/customerService.jpg)
+- get All Customers
+![screenshot](images/findAllCustomer.jpg)
+- show All Products
+![screenshot](images/showAllProducts.jpg)
+- add new customer
+![screenshot](images/resisterCustomer.jpg)
+- buy product
+![screenshot](images/buyProduct.jpg)
+- show products transaction by month
+![screenshot](images/showProductByMonth.jpg)
+- show last 3 months transaction
+![screenshot](images/last3MonthsTransaction.jpg)
+
 http://localhost:8002/swagger-ui/index.html
