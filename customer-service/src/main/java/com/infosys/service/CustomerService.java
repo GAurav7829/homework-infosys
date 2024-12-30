@@ -9,7 +9,8 @@ import com.infosys.model.Product;
 public interface CustomerService {
 	List<Customer> findAllCustomer();
 	Customer registerCustomer(Customer customer);
-	Customer buyProduct(Product product, long customerId);
+	Customer buyProduct(Product product, long customerId, int quantity);
 	List<ProductsBought> getLastThreeTransaction(Long id);
+	List<ProductsBought> getRecordForMonth(Long id, int month);
 	
 }

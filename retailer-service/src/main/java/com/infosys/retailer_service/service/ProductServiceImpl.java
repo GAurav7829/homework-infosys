@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product save(Product product) {
-		product.setId(new Random().nextLong());
+		product.setId(Math.abs(new Random().nextLong()));
 		Product savedProduct = repository.save(product);
 		return savedProduct;
 	}

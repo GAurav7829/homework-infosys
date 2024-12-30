@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.infosys.exception.ErrorMessage;
+import com.infosys.exception.InvalidMonthException;
 import com.infosys.exception.NotFoundException;
 import com.infosys.model.Customer;
 import com.infosys.model.Product;
@@ -64,7 +65,7 @@ public class CustomerController {
 		if (message.equals(AppConstants.QUANTITY_REDUCED)) {
 			ResponseEntity<Product> productResponseEntity = proxy.findProductById(productId);
 			Product product = productResponseEntity.getBody();
-			customerService.buyProduct(product, customerId);
+			customerService.buyProduct(product, customerId, quantity);
 			return ResponseEntity.ok(ITEM_BOUGHT);
 		} else
 			return new ResponseEntity<String>(message, HttpStatus.OK);
@@ -76,17 +77,30 @@ public class CustomerController {
 		return ResponseEntity.ok(lastThreeTransaction);
 	}
 
+	@GetMapping("{id}/month/{month}")
+	public ResponseEntity<?> getMonthWiseProductBought(@PathVariable long id, @PathVariable int month) {
+		List<ProductsBought> record = customerService.getRecordForMonth(id, month);
+		return ResponseEntity.ok(record);
+	}
+
 	@ExceptionHandler(NotFoundException.class)
 	public ResponseEntity<ErrorMessage> handleNotFoundExcetion(HttpServletRequest request,
 			NotFoundException exception) {
 		ErrorMessage message = new ErrorMessage(exception.getMessage(), HttpStatus.NOT_FOUND, LocalDateTime.now());
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
 	}
-	
+
+	@ExceptionHandler(InvalidMonthException.class)
+	public ResponseEntity<ErrorMessage> handleMonthExcetion(HttpServletRequest request,
+			InvalidMonthException exception) {
+		ErrorMessage message = new ErrorMessage(exception.getMessage(), HttpStatus.NOT_FOUND, LocalDateTime.now());
+		return new ResponseEntity<ErrorMessage>(message, HttpStatus.NOT_FOUND);
+	}
+
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<ErrorMessage> handleGlobalException(HttpServletRequest request,
-			NotFoundException exception){
-		ErrorMessage message = new ErrorMessage(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, LocalDateTime.now());
+	public ResponseEntity<ErrorMessage> handleGlobalException(HttpServletRequest request, NotFoundException exception) {
+		ErrorMessage message = new ErrorMessage(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR,
+				LocalDateTime.now());
 		return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

@@ -4,9 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -22,6 +24,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.infosys.exception.InvalidMonthException;
 import com.infosys.exception.NotFoundException;
 import com.infosys.model.Customer;
 import com.infosys.model.Product;
@@ -75,7 +78,7 @@ public class CustomerServiceTest {
 
 		when(repository.findById(1L)).thenReturn(Optional.of(customer));
 
-		Customer result = customerService.buyProduct(product, 1L);
+		Customer result = customerService.buyProduct(product, 1L, 1);
 
 		assertNotNull(result);
 		assertEquals(1, result.getProductsBought().size());
@@ -97,7 +100,7 @@ public class CustomerServiceTest {
 
 		when(repository.findById(1L)).thenReturn(Optional.of(customer));
 
-		Customer result = customerService.buyProduct(product, 1L);
+		Customer result = customerService.buyProduct(product, 1L, 1);
 
 		assertNotNull(result);
 		assertEquals(1, result.getProductsBought().size());
@@ -141,6 +144,48 @@ public class CustomerServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> customerService.getLastThreeTransaction(1L));
+        verify(repository, times(1)).findById(1L);
+    }
+
+	@Test
+	void testGetMonthWiseRecord_ValidMonth() {
+		Customer customer = new Customer();
+		customer.setId(1L);
+		customer.setProductsBought(new ArrayList<>());
+		List<ProductsBought> productsBought = new ArrayList<>();
+		productsBought.add(new ProductsBought(1L, 500, 1, LocalDateTime.now()));
+		productsBought.add(new ProductsBought(2L, 200, 2, LocalDateTime.now().minusMonths(2)));
+		productsBought.add(new ProductsBought(3L, 400, 1, LocalDateTime.now().minusMonths(4)));
+
+		customer.getProductsBought().addAll(productsBought);
+
+		when(repository.findById(1L)).thenReturn(Optional.of(customer));
+
+		List<ProductsBought> result = customerService.getRecordForMonth(1L, 2);
+
+		assertTrue(result.stream().allMatch(p -> p.getDate().isAfter(LocalDateTime.now().minusMonths(2))));
+		verify(repository, times(1)).findById(1L);
+	}
+
+	@Test
+	void testGetMonthWiseRecord_InvalidMonth() {
+		InvalidMonthException exception = assertThrows(InvalidMonthException.class, () -> {
+			customerService.getRecordForMonth(1L, 4);
+		});
+
+		assertEquals("Only fetch records for last 3 months", exception.getMessage());
+		verifyNoInteractions(repository);
+	}
+
+	@Test
+    void testGetMonthWiseRecord_CustomerNotFound() {
+        when(repository.findById(1L)).thenReturn(Optional.empty());
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> {
+            customerService.getRecordForMonth(1L, 2);
+        });
+
+        assertEquals("Customer Not Found.", exception.getMessage());
         verify(repository, times(1)).findById(1L);
     }
 

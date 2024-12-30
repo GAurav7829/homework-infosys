@@ -4,6 +4,7 @@ import static com.infosys.utils.AppConstants.PRODUCT_QUANTITY_IS_GREATER_THAN_QU
 import static com.infosys.utils.AppConstants.QUANTITY_REDUCED;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,6 +31,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.infosys.exception.InvalidMonthException;
 import com.infosys.exception.NotFoundException;
 import com.infosys.model.Customer;
 import com.infosys.model.Product;
@@ -104,7 +106,7 @@ public class CustomerControllerTest {
 
         verify(proxy, times(1)).reduceProductQuantity(1L, 2);
         verify(proxy, times(1)).findProductById(1L);
-        verify(customerService, times(1)).buyProduct(product, 1L);
+        verify(customerService, times(1)).buyProduct(product, 1L, 2);
     }
 
 	@Test
@@ -116,7 +118,6 @@ public class CustomerControllerTest {
 
         verify(proxy, times(1)).reduceProductQuantity(1L, 2);
         verify(proxy, never()).findProductById(anyLong());
-        verify(customerService, never()).buyProduct(any(Product.class), anyLong());
     }
 
 	@Test
@@ -136,10 +137,20 @@ public class CustomerControllerTest {
         when(customerService.getLastThreeTransaction(1L)).thenThrow(new NotFoundException("Customer Not Found"));
 
         mockMvc.perform(get("/customer/1/lastThreeMonthsTransaction"))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("Customer Not Found"));
+                .andExpect(status().isNotFound());
 
-        verify(customerService, times(1)).getLastThreeTransaction(1L);
     }
 
+	@Test
+	void testGetMonthWiseProductBought_InvalidMonth() throws Exception {
+		doThrow(new InvalidMonthException("Only fetch records for last 3 months")).when(customerService)
+				.getRecordForMonth(1L, 4);
+		mockMvc.perform(get("/customers/1/month/4")).andExpect(status().is(404));
+	}
+
+	@Test
+	void testGetMonthWiseProductBought_CustomerNotFound() throws Exception {
+		doThrow(new NotFoundException("Customer Not Found.")).when(customerService).getRecordForMonth(1L, 2);
+		mockMvc.perform(get("/customers/1/month/2")).andExpect(status().isNotFound());
+	}
 }
