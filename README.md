@@ -7,6 +7,9 @@
 http://localhost:8761/
 
 # retailer - product - endpoints
+> Endpoints screenshots
+- Endpoints
+![screenshot](images/productServices.jpg) 
 - add new product
 ![screenshot](images/addNewProduct.jpg)
 - get all products
