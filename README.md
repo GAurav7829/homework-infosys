@@ -6,7 +6,7 @@
 # Eureka Server
 http://localhost:8761/
 
-# retailer - product
+# retailer - product - endpoints
 - add new product
 ![screenshot](images/addNewProduct.jpg)
 - get all products
