@@ -79,7 +79,7 @@ public class CustomerServiceTest {
 
 		assertNotNull(result);
 		assertEquals(1, result.getProductsBought().size());
-		assertEquals(2, result.getCashBackPoints());
+		assertEquals(90, result.getCashBackPoints());
 		verify(repository, times(1)).save(customer);
 	}
 
@@ -92,7 +92,7 @@ public class CustomerServiceTest {
 
 		Product product = new Product();
 		product.setId(2L);
-		product.setPrice(75); // Product price between 50 and 100
+		product.setPrice(60); // Product price between 50 and 100
 		product.setQuantity(1);
 
 		when(repository.findById(1L)).thenReturn(Optional.of(customer));
@@ -101,7 +101,8 @@ public class CustomerServiceTest {
 
 		assertNotNull(result);
 		assertEquals(1, result.getProductsBought().size());
-		assertEquals(1, result.getCashBackPoints());
+		assertEquals(10, result.getCashBackPoints());
+		assertEquals(result.getCashBackPoints(), 10);
 		verify(repository, times(1)).save(customer);
 	}
 

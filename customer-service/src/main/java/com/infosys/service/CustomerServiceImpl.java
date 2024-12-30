@@ -39,10 +39,20 @@ public class CustomerServiceImpl implements CustomerService {
 		productBought.setPrice(product.getPrice());
 		productBought.setQuantity(product.getQuantity());
 		customer.getProductsBought().add(productBought);
-		if (product.getPrice() > 50 && product.getPrice() < 100)
-			customer.setCashBackPoints(customer.getCashBackPoints() + 1);
-		else if (product.getPrice() >= 100)
-			customer.setCashBackPoints(customer.getCashBackPoints() + 2);
+		double productPrice = product.getPrice();
+		double cashBackPoints = 0;
+		if (productPrice >= 50 && productPrice < 100) {
+			if (productPrice == 50)
+				cashBackPoints = 1;
+			else
+				cashBackPoints = productPrice - 50;
+		} else if (productPrice >= 100) {
+			if (productPrice == 100)
+				cashBackPoints = 2;
+			else
+				cashBackPoints = (productPrice - 100) * 2 + 50;
+		}
+		customer.setCashBackPoints(customer.getCashBackPoints() + cashBackPoints);
 		repository.save(customer);
 		return customer;
 	}

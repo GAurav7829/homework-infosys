@@ -19,5 +19,5 @@ public class Customer {
 	private String customerName;
 	private String userName;
 	private List<ProductsBought> productsBought;
-	private long cashBackPoints;
+	private double cashBackPoints;
 }
