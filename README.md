@@ -24,24 +24,24 @@ A retailer offers a rewards program to its customer, awarding points based on ea
 ![screenshot](images/getProductById.jpg)
 - To reduce Quantity when customer purchase the product, used as proxy in customer service
 ![screenshot](images/reduceQuantity.jpg)
-- to open swagger url on port 8001, below is the link
+- to open swagger url on port 8001, below is the link \
 http://localhost:8001/swagger-ui/index.html
 
 ## customer
 > Endpoints screenshots
-- EndPoints
+- All endpoints for customer service
 ![screenshot](images/customerService.jpg)
-- get All Customers
+- To fetch all Customers
 ![screenshot](images/findAllCustomer.jpg)
-- show All Products
+- To show all products, used proxy to fetch all products from retailer service
 ![screenshot](images/showAllProducts.jpg)
-- add new customer
+- To add new customer
 ![screenshot](images/resisterCustomer.jpg)
-- buy product
+- To buy product
 ![screenshot](images/buyProduct.jpg)
 - show products transaction by month
 ![screenshot](images/showProductByMonth.jpg)
 - show last 3 months transaction
 ![screenshot](images/last3MonthsTransaction.jpg)
-
+- to open swagger url on port 8002, below is the link \
 http://localhost:8002/swagger-ui/index.html
