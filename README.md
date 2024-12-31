@@ -1,9 +1,15 @@
 # homework-infosys
+
+## Assignment Description
+A retailer offers a rewards program to its customer, awarding points based on each recorded purchase.
+
+> Flow to start services
 - start api-service
 - start retailer-service
 - start customer-service
 
 # Eureka Server
+> API gateway for Customer and Retailer Service
 http://localhost:8761/
 
 # retailer - product - endpoints

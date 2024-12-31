@@ -36,11 +36,12 @@ public class CustomerServiceImpl implements CustomerService {
 	public Customer buyProduct(Product product, long customerId, int quantity) {
 		Customer customer = repository.findById(customerId).get();
 		ProductsBought productBought = new ProductsBought();
+		productBought.setId(Math.abs(new Random().nextLong()));
 		productBought.setProductId(product.getId());
 		productBought.setPrice(product.getPrice());
 		productBought.setQuantity(quantity);
 		productBought.setDate(LocalDateTime.now());
-		customer.getProductsBought().add(productBought);
+
 		double productPrice = product.getPrice();
 		double cashBackPoints = 0;
 		if (productPrice > 50 && productPrice <= 100) {
@@ -48,6 +49,8 @@ public class CustomerServiceImpl implements CustomerService {
 		} else if (productPrice > 100) {
 			cashBackPoints = (productPrice - 100) * 2 + 50;
 		}
+		productBought.setRewardPoints(cashBackPoints);
+		customer.getProductsBought().add(productBought);
 		customer.setCashBackPoints(customer.getCashBackPoints() + cashBackPoints);
 		repository.save(customer);
 		return customer;
@@ -76,7 +79,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<ProductsBought> getRecordForMonth(Long id, int month) {
-		if(month==0)
+		if (month == 0)
 			throw new InvalidMonthException("Invalid month.");
 		if (month > 0 && month >= 3)
 			throw new InvalidMonthException("Only fetch records for last 3 months");
