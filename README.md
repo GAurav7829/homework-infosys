@@ -1,33 +1,33 @@
 # homework-infosys
 
 ## Assignment Description
-A retailer offers a rewards program to its customer, awarding points based on each recorded purchase.
+A retailer offers a rewards program to its customer, awarding points based on each recorded purchase. Customer receive 2 points on every burchase over $100, plus 1 point on every purchase between $50 and $100 for every transaction.
 
 > Flow to start services
 - start api-service
 - start retailer-service
 - start customer-service
 
-# Eureka Server
+## Eureka Server
 > API gateway for Customer and Retailer Service
-http://localhost:8761/
+- http://localhost:8761/
 
-# retailer - product - endpoints
+## retailer - product - endpoints
 > Endpoints screenshots
-- Endpoints
+- All endpoints for Retailer service
 ![screenshot](images/productServices.jpg) 
-- add new product
+- To add new product
 ![screenshot](images/addNewProduct.jpg)
-- get all products
+- To get all products list
 ![screenshot](images/getAllProducts.jpg)
-- get product by ID
+- To fetch product by product ID
 ![screenshot](images/getProductById.jpg)
-- reduce Quantity
+- To reduce Quantity when customer purchase the product, used as proxy in customer service
 ![screenshot](images/reduceQuantity.jpg)
-
+- to open swagger url on port 8001, below is the link
 http://localhost:8001/swagger-ui/index.html
 
-# customer
+## customer
 > Endpoints screenshots
 - EndPoints
 ![screenshot](images/customerService.jpg)
