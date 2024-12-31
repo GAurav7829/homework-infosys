@@ -79,9 +79,9 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public List<ProductsBought> getRecordForMonth(Long id, int month) {
-		if (month == 0)
+		if (month <= 0)
 			throw new InvalidMonthException("Invalid month.");
-		if (month > 0 && month >= 3)
+		if (month > 0 && month > 3)
 			throw new InvalidMonthException("Only fetch records for last 3 months");
 		Optional<Customer> customerById = repository.findById(id);
 		if (customerById.isPresent()) {
